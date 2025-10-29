@@ -1,1 +1,24 @@
 
+# सुरक्षा: डायरेक्टरी लिस्टिंग को बंद करें
+Options -Indexes
+# सुरक्षा: FollowSymLinks को बंद करें
+Options -FollowSymLinks
+
+<IfModule mod_rewrite.c>
+    # URL Rewriting को चालू करें
+    RewriteEngine On
+
+    # बेस पाथ सेट करें
+    RewriteBase /
+
+    # अगर अनुरोध एक असली फाइल है (जैसे .php, .css, .js), तो उसे सीधे चलाएं
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # अगर अनुरोध एक असली डायरेक्टरी है, तो उसे सीधे चलाएं
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+    
+    # बाकी सभी रिक्वेस्ट को index.php पर भेजें (QSA फ्लैग पैरामीटर्स को बनाए रखता है)
+    RewriteRule . index.php [L,QSA]
+</IfModule>
